@@ -163,6 +163,7 @@ class ConvNetBuilder(object):
            bias=0.0,
            kernel_initializer=None):
     """Construct a conv2d layer on top of cnn."""
+    print("CNNPrint: conv")
     if input_layer is None:
       input_layer = self.top_layer
     if num_channels_in is None:
@@ -288,6 +289,7 @@ class ConvNetBuilder(object):
             input_layer=None,
             num_channels_in=None):
     """Construct a max pooling layer."""
+    print("CNNPrint: mpool")
     return self._pool('mpool', pooling_layers.max_pooling2d, k_height, k_width,
                       d_height, d_width, mode, input_layer, num_channels_in)
 
@@ -300,11 +302,13 @@ class ConvNetBuilder(object):
             input_layer=None,
             num_channels_in=None):
     """Construct an average pooling layer."""
+    print("CNNPrint: apool")
     return self._pool('apool', pooling_layers.average_pooling2d, k_height,
                       k_width, d_height, d_width, mode, input_layer,
                       num_channels_in)
 
   def reshape(self, shape, input_layer=None):
+    print("CNNPrint: reshape")
     if input_layer is None:
       input_layer = self.top_layer
     self.top_layer = tf.reshape(input_layer, shape)
@@ -318,6 +322,7 @@ class ConvNetBuilder(object):
              bias=0.0,
              stddev=None,
              activation='relu'):
+    print("CNNPrint: affine")
     if input_layer is None:
       input_layer = self.top_layer
     if num_channels_in is None:
@@ -387,6 +392,7 @@ class ConvNetBuilder(object):
       return self.top_layer
 
   def spatial_mean(self, keep_dims=False):
+    print("CNNPrint: spatial_mean")
     name = 'spatial_mean' + str(self.counts['spatial_mean'])
     self.counts['spatial_mean'] += 1
     axes = [1, 2] if self.data_format == 'NHWC' else [2, 3]
@@ -395,6 +401,7 @@ class ConvNetBuilder(object):
     return self.top_layer
 
   def dropout(self, keep_prob=0.5, input_layer=None):
+    print("CNNPrint: dropout")
     if input_layer is None:
       input_layer = self.top_layer
     else:
@@ -456,6 +463,7 @@ class ConvNetBuilder(object):
   def batch_norm(self, input_layer=None, decay=0.999, scale=False,
                  epsilon=0.001):
     """Adds a Batch Normalization layer."""
+    print("CNNPrint: batch_norm")
     if input_layer is None:
       input_layer = self.top_layer
     else:
@@ -491,6 +499,7 @@ class ConvNetBuilder(object):
 
   def lrn(self, depth_radius, bias, alpha, beta):
     """Adds a local response normalization layer."""
+    print("CNNPrint: lrn")
     name = 'lrn' + str(self.counts['lrn'])
     self.counts['lrn'] += 1
     self.top_layer = tf.nn.lrn(
