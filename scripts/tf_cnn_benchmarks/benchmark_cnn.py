@@ -735,7 +735,10 @@ def create_config_proto(params):
     params: Params tuple, typically created by make_params or
             make_params_from_flags.
   """
-  config = tf.ConfigProto()
+  gpus = tf.config.experimental.list_physical_devices('GPU')
+  for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
+  config = tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True))
   config.allow_soft_placement = True
   if params.num_intra_threads is None:
     if params.device == 'gpu':
